@@ -53,7 +53,7 @@ func CleanInput(input string) []string {
 // returns the value.
 //
 func CountOccurences(language string, words []string, messages chan WordsCount) {
-  file, err := os.Open("./wordlists/" + language)
+  file, err := os.Open(os.Getenv("GOPATH") + "/src/github.com/AntoineFinkelstein/go-language-detection/wordlists/" + language)
   check(err)
 
   var wordLists []string
