@@ -19,7 +19,7 @@ import (
 )
 
 func main() {
-  result, validity := goLanguageDetection.Find("Dude where's my car ? towel change awesome")
+  result, validity := goLanguageDetection.Find("Dude where's my car ?")
   fmt.Println(result) // => English
   fmt.Println(validity) // Percentage of words found in the returned language
 }
