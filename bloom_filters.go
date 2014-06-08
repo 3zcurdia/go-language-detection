@@ -1,11 +1,12 @@
 package goLanguageDetection
 
 import (
-	"bufio"
 	"github.com/willf/bloom"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"os/user"
+	"strings"
 )
 
 // FileExist search for the existence of a bloom filter for the given language.
@@ -23,16 +24,18 @@ func FileExist(language string) bool {
 //
 func CreateBloomFilter(language string) {
 	filter := bloom.NewWithEstimates(700000, 0.05)
-	file, _ := os.Open(os.Getenv("GOPATH") + "/src/github.com/AntoineFinkelstein/go-language-detection/wordlists/" + language)
-	scanner := bufio.NewScanner(file)
+	resp, _ := http.Get("https://raw.githubusercontent.com/AntoineFinkelstein/go-language-detection/master/wordlists/" + language)
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
 
-	for scanner.Scan() {
-		filter.Add([]byte(scanner.Text()))
+	for _, element := range strings.Split(string(body), "\n") {
+		word := strings.ToLower(element)
+		filter.Add([]byte(word))
 	}
 
 	content, _ := filter.MarshalJSON()
 	usr, _ := user.Current()
-	err := ioutil.WriteFile(usr.HomeDir+"/tmp/"+language, content, 0600)
+	err = ioutil.WriteFile(usr.HomeDir+"/tmp/"+language, content, 0600)
 	if err != nil {
 		panic(err)
 	}
