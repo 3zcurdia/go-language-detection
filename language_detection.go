@@ -2,6 +2,7 @@ package goLanguageDetection
 
 import (
 	"bufio"
+	"github.com/willf/bloom"
 	"os"
 	"regexp"
 	"strings"
@@ -58,18 +59,19 @@ func CountOccurences(language string, words []string, messages chan WordsCount) 
 	file, err := os.Open(os.Getenv("GOPATH") + "/src/github.com/AntoineFinkelstein/go-language-detection/wordlists/" + language)
 	check(err)
 
-	var wordLists []string
-
+	filter := bloom.NewWithEstimates(700000, 0.05)
 	scanner := bufio.NewScanner(file)
+
 	for scanner.Scan() {
-		wordLists = append(wordLists, scanner.Text())
+		filter.Add([]byte(scanner.Text()))
 	}
 
 	file.Close()
 
 	result := 0
 	for _, word := range words {
-		if StringInSlice(word, wordLists) {
+
+		if filter.Test([]byte(word)) {
 			result++
 		}
 	}

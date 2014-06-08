@@ -29,6 +29,7 @@ func main() {
 
 Help welcomed :-)
 
-- [ ] Use bloom filters for better performances
-- [ ] Allow the language files to be built (this package will the work like any other one)
+- [x] Use bloom filters for better performances
+- [ ] Allow the language files to be included in the binaries
+- [ ] Find a way not to read the language files everytime
 - [ ] Write a few tests
