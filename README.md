@@ -3,10 +3,13 @@ go-language-detection
 
 A language detection library for Go.
 
-**This library is currently in development**, although it can be used in it's current form.
-
 ## Installation instructions
-You can't import (at least for now) this library has you would normally. The files containing the languages aren't .go files. Therefore it is required to download the repository, and import it from where you need it.
+First install the package :
+```go
+go get github.com/AntoineFinkelstein/go-language/
+```
+
+The first time the library is called, it will download all the wordlists, create bloom filters and save time to save time later. Therefore, make sure you the package can write at `~/tmp/`.
 
 ## Usage
 
@@ -30,6 +33,6 @@ func main() {
 Help welcomed :-)
 
 - [x] Use bloom filters for better performances
-- [ ] Allow the language files to be included in the binaries
-- [ ] Find a way not to read the language files everytime
+- [x] Allow the language files to be included in the binaries
+- [x] Find a way not to read the language files everytime
 - [ ] Write a few tests
