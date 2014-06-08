@@ -13,23 +13,6 @@ type WordsCount struct {
 	count    int
 }
 
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
-// StringInSlice returns if the string is past of the given list.
-//
-func StringInSlice(a string, list []string) bool {
-	for _, b := range list {
-		if b == a {
-			return true
-		}
-	}
-	return false
-}
-
 // CleanInput takes the request string, removes unwanted values and returns an
 // Array of words.
 //
@@ -56,8 +39,7 @@ func CleanInput(input string) []string {
 // returns the value.
 //
 func CountOccurences(language string, words []string, messages chan WordsCount) {
-	file, err := os.Open(os.Getenv("GOPATH") + "/src/github.com/AntoineFinkelstein/go-language-detection/wordlists/" + language)
-	check(err)
+	file, _ := os.Open(os.Getenv("GOPATH") + "/src/github.com/AntoineFinkelstein/go-language-detection/wordlists/" + language)
 
 	filter := bloom.NewWithEstimates(700000, 0.05)
 	scanner := bufio.NewScanner(file)
