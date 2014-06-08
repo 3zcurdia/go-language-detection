@@ -56,7 +56,6 @@ func CleanInput(input string) []string {
 //
 func CountOccurences(language string, words []string, messages chan WordsCount) {
 	file, err := os.Open(os.Getenv("GOPATH") + "/src/github.com/AntoineFinkelstein/go-language-detection/wordlists/" + language)
-	defer file.Close()
 	check(err)
 
 	var wordLists []string
@@ -65,6 +64,8 @@ func CountOccurences(language string, words []string, messages chan WordsCount) 
 	for scanner.Scan() {
 		wordLists = append(wordLists, scanner.Text())
 	}
+
+	file.Close()
 
 	result := 0
 	for _, word := range words {
