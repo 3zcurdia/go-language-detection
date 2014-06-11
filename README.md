@@ -6,7 +6,7 @@ A language detection library for Go.
 ## Installation instructions
 First install the package :
 ```go
-go get github.com/AntoineFinkelstein/go-language/
+go get github.com/AntoineFinkelstein/go-language-detection/
 ```
 
 The first time the library is called, it will download all the wordlists, create bloom filters and save time to save time later. Therefore, make sure you the package can write at `~/tmp/`.
