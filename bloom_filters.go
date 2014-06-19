@@ -44,8 +44,18 @@ func CreateBloomFilter(language string) {
 // CountOccurences counts the number words belonging to the given language and
 // returns the value.
 //
-func CountOccurences(language string, words []string, messages chan WordsCount) {
+func CountOccurences(language string, filter *bloom.BloomFilter, words []string, messages chan WordsCount) {
+	result := 0
+	for _, word := range words {
 
+		if filter.Test([]byte(word)) {
+			result++
+		}
+	}
+	messages <- WordsCount{language: language, count: result}
+}
+
+func DefineFilter(language string) *bloom.BloomFilter {
 	// If the bloomfilters don't exist. They're created.
 	if FileExist(language) == false {
 		CreateBloomFilter(language)
@@ -55,13 +65,5 @@ func CountOccurences(language string, words []string, messages chan WordsCount) 
 	usr, _ := user.Current()
 	file, _ := ioutil.ReadFile(usr.HomeDir + "/tmp/" + language)
 	_ = filter.UnmarshalJSON(file)
-
-	result := 0
-	for _, word := range words {
-
-		if filter.Test([]byte(word)) {
-			result++
-		}
-	}
-	messages <- WordsCount{language: language, count: result}
+	return filter
 }
